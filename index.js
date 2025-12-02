@@ -446,43 +446,26 @@ bot.command("bc", async (ctx) => {
   ctx.reply("✅ Selesai.");
 });
 
-// ===================================
-// EXPRESS SERVER – WAJIB DI BAWAH INI
-// ===================================
+// ===== WEB SERVER FIX 2025 – PAKAI YANG INI AJA! =====
 const express = require('express');
 const app = express();
 
-app.use(express.json());
-
-// Route utama (biar preview Replit langsung muncul)
 app.get('/', (req, res) => {
   res.send(`
     <h1>Bot Panel Gratis Aktif 24/7</h1>
-    <p>Bot Telegram sudah berjalan!</p>
+    <p>Status: ONLINE</p>
     <p>Ping: <a href="/ping">/ping</a></p>
-    <hr>
-    <small>Uptime by UptimeRobot</small>
   `);
 });
 
-// Route ping khusus UptimeRobot
 app.get('/ping', (req, res) => {
-  res.status(200).send('OK - Bot alive!');
+  res.status(200).send('OK');
 });
 
-// Port wajib pake process.env.PORT di Replit!
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Web server jalan di port ${PORT}`);
-  console.log(`Buka: https://${process.env.REPL_SLUG}.${process.env.REPL_OWNER}.repl.co`);
-});
-
-// ===================================
-// JANGAN PINDAHKAN BOT.LAUNCH() KE ATAS!
-// ===================================
-console.log("Bot Full UI + Cek Server Berjalan...");
-bot.launch({
-  dropPendingUpdates: true
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Web server aktif di port ${PORT}`);
+  console.log(`URL PING: https://free.smithh32.repl.co/ping`);
 });
 
 process.once('SIGINT', () => bot.stop('SIGINT'));
