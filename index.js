@@ -446,34 +446,44 @@ bot.command("bc", async (ctx) => {
   ctx.reply("✅ Selesai.");
 });
 
-// === EXPRESS SERVER UNTUK ANTI-SLEEP ===
+// ===================================
+// EXPRESS SERVER – WAJIB DI BAWAH INI
+// ===================================
 const express = require('express');
 const app = express();
 
 app.use(express.json());
 
+// Route utama (biar preview Replit langsung muncul)
+app.get('/', (req, res) => {
+  res.send(`
+    <h1>Bot Panel Gratis Aktif 24/7</h1>
+    <p>Bot Telegram sudah berjalan!</p>
+    <p>Ping: <a href="/ping">/ping</a></p>
+    <hr>
+    <small>Uptime by UptimeRobot</small>
+  `);
+});
+
+// Route ping khusus UptimeRobot
 app.get('/ping', (req, res) => {
   res.status(200).send('OK - Bot alive!');
 });
 
-app.get('/', (req, res) => {
-  res.send('Bot Telegram Panel Gratis sedang berjalan!');
-});
-
+// Port wajib pake process.env.PORT di Replit!
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Express server berjalan di port ${PORT}`);
-  console.log(`Ping URL: https://your-repl-name.yourusername.repl.co/ping`);
+  console.log(`Web server jalan di port ${PORT}`);
+  console.log(`Buka: https://${process.env.REPL_SLUG}.${process.env.REPL_OWNER}.repl.co`);
 });
 
-// === JALANKAN BOT TELEGRAF ===
+// ===================================
+// JANGAN PINDAHKAN BOT.LAUNCH() KE ATAS!
+// ===================================
 console.log("Bot Full UI + Cek Server Berjalan...");
 bot.launch({
   dropPendingUpdates: true
 });
 
-process.once('SIGINT', () => {
-  console.log('Bot dihentikan...');
-  bot.stop('SIGINT');
-});
+process.once('SIGINT', () => bot.stop('SIGINT'));
 process.once('SIGTERM', () => bot.stop('SIGTERM'));
