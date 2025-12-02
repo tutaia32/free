@@ -446,6 +446,18 @@ bot.command("bc", async (ctx) => {
   ctx.reply("✅ Selesai.");
 });
 
+const express = require('express');
+const app = express();
+app.use(express.json());
+
+// Ping endpoint
+app.get('/ping', (req, res) => res.send('OK - Bot alive! 🤖'));
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Ping ready on port ${PORT}`));
+
+// ... sisa kode Telegraf ...
+
 console.log("Bot Full UI + Cek Server Berjalan...");
 bot.launch();
 process.once('SIGINT', () => bot.stop('SIGINT'));
